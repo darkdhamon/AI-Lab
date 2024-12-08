@@ -1,4 +1,6 @@
-﻿namespace QR_Code_Desktop_App
+﻿using QRCodeGeneratorLib;
+
+namespace QR_Code_Desktop_App
 {
     partial class Form1
     {
@@ -35,7 +37,12 @@
             this.logoPathTextBox = new System.Windows.Forms.TextBox();
             this.browseLogoButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
+            this.socialMediaGroup = new System.Windows.Forms.GroupBox();
+            this.socialMediaPlatformComboBox = new System.Windows.Forms.ComboBox();
+            this.socialMediaHandleTextBox = new System.Windows.Forms.TextBox();
+
             ((System.ComponentModel.ISupportInitialize)(this.qrCodePreview)).BeginInit();
+            this.socialMediaGroup.SuspendLayout();
             this.SuspendLayout();
 
             // 
@@ -117,11 +124,48 @@
             this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
 
             // 
+            // socialMediaGroup
+            // 
+            this.socialMediaGroup.Controls.Add(this.socialMediaPlatformComboBox);
+            this.socialMediaGroup.Controls.Add(this.socialMediaHandleTextBox);
+            this.socialMediaGroup.Location = new System.Drawing.Point(20, 140);
+            this.socialMediaGroup.Name = "socialMediaGroup";
+            this.socialMediaGroup.Size = new System.Drawing.Size(400, 100);
+            this.socialMediaGroup.TabIndex = 7;
+            this.socialMediaGroup.TabStop = false;
+            this.socialMediaGroup.Text = "Social Media";
+            this.socialMediaGroup.Visible = false;
+
+            // 
+            // socialMediaPlatformComboBox
+            // 
+            this.socialMediaPlatformComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.socialMediaPlatformComboBox.FormattingEnabled = true;
+            this.socialMediaPlatformComboBox.Items.AddRange(new object[] {
+            "Facebook",
+            "Twitter",
+            "Instagram"});
+            this.socialMediaPlatformComboBox.Location = new System.Drawing.Point(20, 20);
+            this.socialMediaPlatformComboBox.Name = "socialMediaPlatformComboBox";
+            this.socialMediaPlatformComboBox.Size = new System.Drawing.Size(200, 23);
+            this.socialMediaPlatformComboBox.TabIndex = 0;
+
+            // 
+            // socialMediaHandleTextBox
+            // 
+            this.socialMediaHandleTextBox.Location = new System.Drawing.Point(20, 60);
+            this.socialMediaHandleTextBox.Name = "socialMediaHandleTextBox";
+            this.socialMediaHandleTextBox.Size = new System.Drawing.Size(200, 23);
+            this.socialMediaHandleTextBox.TabIndex = 1;
+            this.socialMediaHandleTextBox.PlaceholderText = "Handle/URL";
+
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 400);
+            this.Controls.Add(this.socialMediaGroup);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.qrCodePreview);
             this.Controls.Add(this.generateButton);
@@ -132,6 +176,8 @@
             this.Name = "Form1";
             this.Text = "QR Code Generator";
             ((System.ComponentModel.ISupportInitialize)(this.qrCodePreview)).EndInit();
+            this.socialMediaGroup.ResumeLayout(false);
+            this.socialMediaGroup.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -143,6 +189,9 @@
         private System.Windows.Forms.TextBox logoPathTextBox;
         private System.Windows.Forms.Button browseLogoButton;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.GroupBox socialMediaGroup;
+        private System.Windows.Forms.ComboBox socialMediaPlatformComboBox;
+        private System.Windows.Forms.TextBox socialMediaHandleTextBox;
 
         private void BrowseLogoButton_Click(object sender, EventArgs e)
         {
@@ -158,58 +207,7 @@
 
         private void GenerateButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                string input = inputTextBox.Text;
-                string logoPath = logoPathTextBox.Text;
-                string qrType = qrTypeComboBox.SelectedItem?.ToString();
-
-                if (string.IsNullOrWhiteSpace(input))
-                {
-                    System.Windows.Forms.MessageBox.Show("Please provide the required input.", "Error");
-                    return;
-                }
-
-                var qrGenerator = new QRCodeGeneratorLib.QRCodeGeneratorTool();
-                string tempFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "GeneratedQRCode.png");
-                bool success = false;
-
-                switch (qrType)
-                {
-                    case "Text":
-                        success = qrGenerator.GenerateQRCode(input, tempFilePath, logoFilePath: logoPath);
-                        break;
-                    case "Hyperlink":
-                        success = qrGenerator.GenerateHyperlinkQRCode(input, tempFilePath, logoFilePath: logoPath);
-                        break;
-                    case "Contact Card":
-                        // Add Contact Card handling logic here when additional fields are implemented.
-                        break;
-                    case "Event":
-                        // Add Event handling logic here when additional fields are implemented.
-                        break;
-                    case "Social Media":
-                        // Add Social Media handling logic here when additional fields are implemented.
-                        break;
-                    default:
-                        System.Windows.Forms.MessageBox.Show("Unsupported QR code type.", "Error");
-                        return;
-                }
-
-                if (success)
-                {
-                    qrCodePreview.Image?.Dispose();
-                    qrCodePreview.Image = System.Drawing.Image.FromFile(tempFilePath);
-                }
-                else
-                {
-                    System.Windows.Forms.MessageBox.Show("Failed to generate QR Code.", "Error");
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show($"Error: {ex.Message}", "Error");
-            }
+            GenerateQRCode();
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -233,8 +231,65 @@
 
         private void QrTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Placeholder logic for handling type selection.
-            System.Windows.Forms.MessageBox.Show("QR Code type changed.", "Info");
+            HideAllInputGroups();
+
+            switch (qrTypeComboBox.SelectedItem?.ToString())
+            {
+                case "Social Media":
+                    socialMediaGroup.Visible = true;
+                    break;
+                default:
+                    inputTextBox.Visible = true;
+                    break;
+            }
+
+            GenerateQRCode();
+        }
+
+        private void HideAllInputGroups()
+        {
+            inputTextBox.Visible = false;
+            socialMediaGroup.Visible = false;
+        }
+
+        private void GenerateQRCode()
+        {
+            try
+            {
+                string qrType = qrTypeComboBox.SelectedItem?.ToString();
+                string input = inputTextBox.Text;
+                string logoPath = logoPathTextBox.Text;
+                string tempFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "GeneratedQRCode.png");
+
+                var qrGenerator = new QRCodeGeneratorLib.QRCodeGeneratorTool();
+                bool success = false;
+
+                switch (qrType)
+                {
+                    case "Social Media":
+                        string platform = socialMediaPlatformComboBox.SelectedItem?.ToString();
+                        string handle = socialMediaHandleTextBox.Text;
+                        success = qrGenerator.GenerateSocialMediaQRCode(Enum.Parse<SocialMediaPlatform>(platform), handle, tempFilePath, logoFilePath: logoPath);
+                        break;
+                    default:
+                        success = qrGenerator.GenerateQRCode(input, tempFilePath, logoFilePath: logoPath);
+                        break;
+                }
+
+                if (success)
+                {
+                    qrCodePreview.Image?.Dispose();
+                    qrCodePreview.Image = System.Drawing.Image.FromFile(tempFilePath);
+                }
+                else
+                {
+                    System.Windows.Forms.MessageBox.Show("Failed to generate QR Code.", "Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Error: {ex.Message}", "Error");
+            }
         }
 
         #endregion
