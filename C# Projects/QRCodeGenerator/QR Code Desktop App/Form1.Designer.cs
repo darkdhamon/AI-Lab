@@ -1,6 +1,4 @@
-﻿using QRCodeGeneratorLib;
-
-namespace QR_Code_Desktop_App
+﻿namespace QR_Code_Desktop_App
 {
     partial class Form1
     {
@@ -40,9 +38,16 @@ namespace QR_Code_Desktop_App
             this.socialMediaGroup = new System.Windows.Forms.GroupBox();
             this.socialMediaPlatformComboBox = new System.Windows.Forms.ComboBox();
             this.socialMediaHandleTextBox = new System.Windows.Forms.TextBox();
+            this.contactCardGroup = new System.Windows.Forms.GroupBox();
+            this.firstNameTextBox = new System.Windows.Forms.TextBox();
+            this.lastNameTextBox = new System.Windows.Forms.TextBox();
+            this.emailTextBox = new System.Windows.Forms.TextBox();
+            this.organizationTextBox = new System.Windows.Forms.TextBox();
+            this.phoneTextBox = new System.Windows.Forms.TextBox();
 
             ((System.ComponentModel.ISupportInitialize)(this.qrCodePreview)).BeginInit();
             this.socialMediaGroup.SuspendLayout();
+            this.contactCardGroup.SuspendLayout();
             this.SuspendLayout();
 
             // 
@@ -52,6 +57,7 @@ namespace QR_Code_Desktop_App
             this.inputTextBox.Name = "inputTextBox";
             this.inputTextBox.Size = new System.Drawing.Size(400, 23);
             this.inputTextBox.TabIndex = 0;
+            this.inputTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
 
             // 
             // generateButton
@@ -100,6 +106,7 @@ namespace QR_Code_Desktop_App
             this.logoPathTextBox.Size = new System.Drawing.Size(300, 23);
             this.logoPathTextBox.TabIndex = 4;
             this.logoPathTextBox.PlaceholderText = "Optional: Path to logo image";
+            this.logoPathTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
 
             // 
             // browseLogoButton
@@ -149,6 +156,7 @@ namespace QR_Code_Desktop_App
             this.socialMediaPlatformComboBox.Name = "socialMediaPlatformComboBox";
             this.socialMediaPlatformComboBox.Size = new System.Drawing.Size(200, 23);
             this.socialMediaPlatformComboBox.TabIndex = 0;
+            this.socialMediaPlatformComboBox.SelectedIndexChanged += new System.EventHandler(this.GenerateButton_Click);
 
             // 
             // socialMediaHandleTextBox
@@ -158,6 +166,73 @@ namespace QR_Code_Desktop_App
             this.socialMediaHandleTextBox.Size = new System.Drawing.Size(200, 23);
             this.socialMediaHandleTextBox.TabIndex = 1;
             this.socialMediaHandleTextBox.PlaceholderText = "Handle/URL";
+            this.socialMediaHandleTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
+
+            // 
+            // contactCardGroup
+            // 
+            this.contactCardGroup.Controls.Add(this.firstNameTextBox);
+            this.contactCardGroup.Controls.Add(this.lastNameTextBox);
+            this.contactCardGroup.Controls.Add(this.emailTextBox);
+            this.contactCardGroup.Controls.Add(this.organizationTextBox);
+            this.contactCardGroup.Controls.Add(this.phoneTextBox);
+            this.contactCardGroup.Location = new System.Drawing.Point(20, 140);
+            this.contactCardGroup.Name = "contactCardGroup";
+            this.contactCardGroup.Size = new System.Drawing.Size(400, 180);
+            this.contactCardGroup.TabIndex = 8;
+            this.contactCardGroup.TabStop = false;
+            this.contactCardGroup.Text = "Contact Card";
+            this.contactCardGroup.Visible = false;
+
+            // 
+            // firstNameTextBox
+            // 
+            this.firstNameTextBox.Location = new System.Drawing.Point(20, 20);
+            this.firstNameTextBox.Name = "firstNameTextBox";
+            this.firstNameTextBox.Size = new System.Drawing.Size(200, 23);
+            this.firstNameTextBox.TabIndex = 0;
+            this.firstNameTextBox.PlaceholderText = "First Name";
+            this.firstNameTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
+
+            // 
+            // lastNameTextBox
+            // 
+            this.lastNameTextBox.Location = new System.Drawing.Point(20, 60);
+            this.lastNameTextBox.Name = "lastNameTextBox";
+            this.lastNameTextBox.Size = new System.Drawing.Size(200, 23);
+            this.lastNameTextBox.TabIndex = 1;
+            this.lastNameTextBox.PlaceholderText = "Last Name";
+            this.lastNameTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
+
+            // 
+            // emailTextBox
+            // 
+            this.emailTextBox.Location = new System.Drawing.Point(20, 100);
+            this.emailTextBox.Name = "emailTextBox";
+            this.emailTextBox.Size = new System.Drawing.Size(200, 23);
+            this.emailTextBox.TabIndex = 2;
+            this.emailTextBox.PlaceholderText = "Email";
+            this.emailTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
+
+            // 
+            // organizationTextBox
+            // 
+            this.organizationTextBox.Location = new System.Drawing.Point(20, 140);
+            this.organizationTextBox.Name = "organizationTextBox";
+            this.organizationTextBox.Size = new System.Drawing.Size(200, 23);
+            this.organizationTextBox.TabIndex = 3;
+            this.organizationTextBox.PlaceholderText = "Organization";
+            this.organizationTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
+
+            // 
+            // phoneTextBox
+            // 
+            this.phoneTextBox.Location = new System.Drawing.Point(20, 160);
+            this.phoneTextBox.Name = "phoneTextBox";
+            this.phoneTextBox.Size = new System.Drawing.Size(200, 23);
+            this.phoneTextBox.TabIndex = 4;
+            this.phoneTextBox.PlaceholderText = "Phone";
+            this.phoneTextBox.TextChanged += new System.EventHandler(this.GenerateButton_Click);
 
             // 
             // Form1
@@ -165,6 +240,7 @@ namespace QR_Code_Desktop_App
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 400);
+            this.Controls.Add(this.contactCardGroup);
             this.Controls.Add(this.socialMediaGroup);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.qrCodePreview);
@@ -178,6 +254,8 @@ namespace QR_Code_Desktop_App
             ((System.ComponentModel.ISupportInitialize)(this.qrCodePreview)).EndInit();
             this.socialMediaGroup.ResumeLayout(false);
             this.socialMediaGroup.PerformLayout();
+            this.contactCardGroup.ResumeLayout(false);
+            this.contactCardGroup.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -192,6 +270,12 @@ namespace QR_Code_Desktop_App
         private System.Windows.Forms.GroupBox socialMediaGroup;
         private System.Windows.Forms.ComboBox socialMediaPlatformComboBox;
         private System.Windows.Forms.TextBox socialMediaHandleTextBox;
+        private System.Windows.Forms.GroupBox contactCardGroup;
+        private System.Windows.Forms.TextBox firstNameTextBox;
+        private System.Windows.Forms.TextBox lastNameTextBox;
+        private System.Windows.Forms.TextBox emailTextBox;
+        private System.Windows.Forms.TextBox organizationTextBox;
+        private System.Windows.Forms.TextBox phoneTextBox;
 
         private void BrowseLogoButton_Click(object sender, EventArgs e)
         {
@@ -214,7 +298,7 @@ namespace QR_Code_Desktop_App
         {
             if (qrCodePreview.Image == null)
             {
-                System.Windows.Forms.MessageBox.Show("No QR Code to save.", "Error");
+                Console.WriteLine("No QR Code to save.");
                 return;
             }
 
@@ -224,7 +308,7 @@ namespace QR_Code_Desktop_App
                 if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     qrCodePreview.Image.Save(saveFileDialog.FileName);
-                    System.Windows.Forms.MessageBox.Show("QR Code saved successfully.", "Success");
+                    Console.WriteLine("QR Code saved successfully.");
                 }
             }
         }
@@ -238,6 +322,9 @@ namespace QR_Code_Desktop_App
                 case "Social Media":
                     socialMediaGroup.Visible = true;
                     break;
+                case "Contact Card":
+                    contactCardGroup.Visible = true;
+                    break;
                 default:
                     inputTextBox.Visible = true;
                     break;
@@ -250,6 +337,7 @@ namespace QR_Code_Desktop_App
         {
             inputTextBox.Visible = false;
             socialMediaGroup.Visible = false;
+            contactCardGroup.Visible = false;
         }
 
         private void GenerateQRCode()
@@ -259,7 +347,7 @@ namespace QR_Code_Desktop_App
                 string qrType = qrTypeComboBox.SelectedItem?.ToString();
                 string input = inputTextBox.Text;
                 string logoPath = logoPathTextBox.Text;
-                string tempFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "GeneratedQRCode.png");
+                string tempFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}_GeneratedQRCode.png");
 
                 var qrGenerator = new QRCodeGeneratorLib.QRCodeGeneratorTool();
                 bool success = false;
@@ -267,9 +355,23 @@ namespace QR_Code_Desktop_App
                 switch (qrType)
                 {
                     case "Social Media":
-                        string platform = socialMediaPlatformComboBox.SelectedItem?.ToString();
-                        string handle = socialMediaHandleTextBox.Text;
-                        success = qrGenerator.GenerateSocialMediaQRCode(Enum.Parse<SocialMediaPlatform>(platform), handle, tempFilePath, logoFilePath: logoPath);
+                        if (Enum.TryParse(socialMediaPlatformComboBox.SelectedItem?.ToString(), out QRCodeGeneratorLib.SocialMediaPlatform platform))
+                        {
+                            string handle = socialMediaHandleTextBox.Text;
+                            success = qrGenerator.GenerateSocialMediaQRCode(platform, handle, tempFilePath, logoFilePath: logoPath);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid Social Media Platform.");
+                        }
+                        break;
+                    case "Contact Card":
+                        string firstName = firstNameTextBox.Text;
+                        string lastName = lastNameTextBox.Text;
+                        string email = emailTextBox.Text;
+                        string organization = organizationTextBox.Text;
+                        string phone = phoneTextBox.Text;
+                        success = qrGenerator.GenerateContactCardQRCode(firstName, lastName, organization, phone, email, tempFilePath, logoFilePath: logoPath);
                         break;
                     default:
                         success = qrGenerator.GenerateQRCode(input, tempFilePath, logoFilePath: logoPath);
@@ -278,17 +380,23 @@ namespace QR_Code_Desktop_App
 
                 if (success)
                 {
-                    qrCodePreview.Image?.Dispose();
+                    if (qrCodePreview.Image != null)
+                    {
+                        qrCodePreview.Image.Dispose();
+                        qrCodePreview.Image = null;
+                    }
+
                     qrCodePreview.Image = System.Drawing.Image.FromFile(tempFilePath);
+                    Console.WriteLine("QR Code generated successfully.");
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show("Failed to generate QR Code.", "Error");
+                    Console.WriteLine("Failed to generate QR Code.");
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show($"Error: {ex.Message}", "Error");
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
