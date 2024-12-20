@@ -5,14 +5,6 @@ using QRCoder; // Open source library to handle QR Code generation
 
 namespace QRCodeGeneratorLib
 {
-    public enum SocialMediaPlatform
-    {
-        Facebook,
-        Twitter,
-        Instagram,
-        LinkedIn,
-        YouTube
-    }
 
     public class QRCodeGeneratorTool
     {
