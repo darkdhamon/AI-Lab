@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using SkiaSharp;
+﻿using SkiaSharp;
 using QRCoder; // Open source library to handle QR Code generation
 
 namespace QRCodeGeneratorLib
