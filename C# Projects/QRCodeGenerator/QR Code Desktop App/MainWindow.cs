@@ -9,6 +9,17 @@ namespace QR_Code_Desktop_App
             // Event Handlers
             qrCodeTypeSelector.SelectedIndexChanged += QrCodeTypeSelector_SelectedIndexChanged;
             qrTextUserControl.TextUpdated += UpdateQRCode; // Subscribe to TextUpdated
+            contactCardUserControl.ContactCardUpdated += UpdateQRCode;
+            qrHyperlinkUserControl.HyperlinkUpdated += UpdateQRCode;
+
+            // Subscribe to ColorUpdated event from QRColorOptions
+            qrColorOptions.ColorUpdated += UpdateQRCode;
+
+            // Subscribe to MenuBar events
+            menuBarUserControl.SavePNGClicked += MenuBar_SavePNG;
+            menuBarUserControl.SavePNGAsClicked += MenuBar_SavePNGAs;
+            menuBarUserControl.SaveDataClicked += MenuBar_SaveData;
+            menuBarUserControl.OpenClicked += MenuBar_Open;
 
             // Attach UpdateQRCode to all relevant input fields
             AttachUpdateListeners();
@@ -30,6 +41,108 @@ namespace QR_Code_Desktop_App
             }
         }
 
+        // Conversion helper for colors
+        private SkiaSharp.SKColor ConvertToSkiaColor(Color color)
+        {
+            return new SkiaSharp.SKColor(color.R, color.G, color.B, color.A);
+        }
+
+        // MenuBar Event Handlers
+        private void MenuBar_SavePNG(object sender, EventArgs e)
+        {
+            try
+            {
+                if (previewPanel.QRCodeImage == null)
+                {
+                    MessageBox.Show("No QR Code to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "PNG Image|*.png",
+                    Title = "Save QR Code as PNG"
+                };
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    previewPanel.QRCodeImage.Save(saveFileDialog.FileName);
+                    MessageBox.Show("QR Code saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving QR Code: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void MenuBar_SavePNGAs(object sender, EventArgs e)
+        {
+            MenuBar_SavePNG(sender, e); // Reuse same logic for Save As for now
+        }
+
+        private void MenuBar_SaveData(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = new
+                {
+                    QRCodeType = qrCodeTypeSelector.SelectedItem?.ToString(),
+                    QRCodeContent = previewPanel.QRCodeContent,
+                    ForegroundColor = qrColorOptions.SelectedForegroundColor.ToArgb(),
+                    BackgroundColor = qrColorOptions.SelectedBackgroundColor.ToArgb()
+                };
+
+                var saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "JSON File|*.json",
+                    Title = "Save QR Code Data"
+                };
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var jsonData = System.Text.Json.JsonSerializer.Serialize(data);
+                    File.WriteAllText(saveFileDialog.FileName, jsonData);
+                    MessageBox.Show("QR Code data saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving QR Code data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void MenuBar_Open(object sender, EventArgs e)
+        {
+            try
+            {
+                var openFileDialog = new OpenFileDialog
+                {
+                    Filter = "JSON File|*.json",
+                    Title = "Open QR Code Data"
+                };
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var jsonData = File.ReadAllText(openFileDialog.FileName);
+                    var data = System.Text.Json.JsonSerializer.Deserialize<dynamic>(jsonData);
+
+                    qrCodeTypeSelector.SelectedItem = data["QRCodeType"];
+                    previewPanel.QRCodeContent = data["QRCodeContent"];
+                    qrColorOptions.SelectedForegroundColor = Color.FromArgb((int)data["ForegroundColor"]);
+                    qrColorOptions.SelectedBackgroundColor = Color.FromArgb((int)data["BackgroundColor"]);
+
+                    UpdateQRCode(sender, e);
+
+                    MessageBox.Show("QR Code data loaded successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading QR Code data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         // Listener: Update QR Code when input changes
         private void UpdateQRCode(object sender, EventArgs e)
         {
@@ -48,7 +161,7 @@ namespace QR_Code_Desktop_App
                         qrContent = qrTextUserControl.GetText(); // Assuming GetText() fetches the user input
                         break;
                     case "Hyperlink":
-                        qrContent = qrHyperlinkInput.Text;
+                        qrContent = qrHyperlinkUserControl.GetHyperlink();
                         break;
                     case "Contact Card":
                         qrContent = contactCardUserControl.GetContactCardData(); // Assuming GetContactCardData() compiles contact card info
@@ -59,16 +172,29 @@ namespace QR_Code_Desktop_App
                         return;
                 }
 
-                // Use QR code generator library (e.g., QRCoder) to create QR code
-                var qrGenerator = new QRCoder.QRCodeGenerator();
-                var qrCodeData = qrGenerator.CreateQrCode(qrContent, QRCoder.QRCodeGenerator.ECCLevel.Q);
-                var qrCode = new QRCoder.QRCode(qrCodeData);
-                var qrCodeImage = qrCode.GetGraphic(20);
+                // Get colors from QRColorOptions
+                var foregroundColor = ConvertToSkiaColor(qrColorOptions.SelectedForegroundColor);
+                var backgroundColor = ConvertToSkiaColor(qrColorOptions.SelectedBackgroundColor);
 
-                // Update the preview pane
-                previewPanel.UpdatePreview(qrCodeImage, qrContent); // Assuming UpdatePreview() handles both image and text preview
+                // Use QRCodeGeneratorTool from the user's library
+                var qrGenerator = new QRCodeGeneratorLib.QRCodeGeneratorTool();
+                var tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}_GeneratedQRCode.png");
 
-                Console.WriteLine("QR Code successfully updated.");
+                bool success = qrGenerator.GenerateQRCode(qrContent, tempFilePath, 20, foregroundColor, backgroundColor);
+
+                if (success)
+                {
+                    var qrCodeImage = Image.FromFile(tempFilePath);
+
+                    // Update the preview pane
+                    previewPanel.UpdatePreview(qrCodeImage, qrContent); // Assuming UpdatePreview() handles both image and text preview
+
+                    Console.WriteLine("QR Code successfully updated.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to generate QR Code.");
+                }
             }
             catch (Exception ex)
             {
@@ -76,19 +202,23 @@ namespace QR_Code_Desktop_App
             }
         }
 
-        // Listener: Handle QR Code Type selection change
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void QrCodeTypeSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Ignore placeholder value
             if (qrCodeTypeSelector.SelectedIndex == 0)
             {
-                HideQRCodeTypeGroupBoxes();
+                HideQrCodeTypeGroupBoxes();
                 Console.WriteLine("Placeholder selected. No action performed.");
                 return;
             }
 
             // Hide all QR code type-specific group boxes initially
-            HideQRCodeTypeGroupBoxes();
+            HideQrCodeTypeGroupBoxes();
 
             // Show the relevant group box based on selected type
             string selectedType = qrCodeTypeSelector.SelectedItem?.ToString();
@@ -98,7 +228,7 @@ namespace QR_Code_Desktop_App
                     qrTextUserControl.Visible = true;
                     break;
                 case "Hyperlink":
-                    qrHyperlinkGroupBox.Visible = true;
+                    qrHyperlinkUserControl.Visible = true;
                     break;
                 case "Contact Card":
                     contactCardUserControl.Visible = true;
@@ -118,13 +248,16 @@ namespace QR_Code_Desktop_App
             UpdateQRCode(sender, e);
         }
 
-        // Helper: Hide all QR code type-specific group boxes
-        private void HideQRCodeTypeGroupBoxes()
+        /// <summary>
+        /// 
+        /// </summary>
+        private void HideQrCodeTypeGroupBoxes()
         {
             qrTextUserControl.Visible = false;
-            qrHyperlinkGroupBox.Visible = false;
+            qrHyperlinkUserControl.Visible = false;
             contactCardUserControl.Visible = false;
             // Add logic for other group boxes if applicable
+            
         }
     }
 }

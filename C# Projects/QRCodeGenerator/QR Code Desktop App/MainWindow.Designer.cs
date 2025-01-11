@@ -12,7 +12,7 @@ namespace QR_Code_Desktop_App
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -36,12 +36,12 @@ namespace QR_Code_Desktop_App
             qrCodeContentTab = new TabPage();
             flowLayoutPanel1 = new FlowLayoutPanel();
             qrTextUserControl = new QRTextUserControl();
-            qrHyperlinkGroupBox = new GroupBox();
-            qrHyperlinkInput = new TextBox();
+            qrHyperlinkUserControl = new QRHyperlinkUserControl();
             contactCardUserControl = new ContactCardUserControl();
             qrCodeTypeSelector = new ComboBox();
             generalOptionsTab = new TabPage();
             previewPanel = new PreviewPanel();
+            qrColorOptions = new QRColorOptions();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -49,7 +49,6 @@ namespace QR_Code_Desktop_App
             tabControl1.SuspendLayout();
             qrCodeContentTab.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            qrHyperlinkGroupBox.SuspendLayout();
             SuspendLayout();
             // 
             // menuBarUserControl
@@ -107,7 +106,7 @@ namespace QR_Code_Desktop_App
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.Controls.Add(qrTextUserControl);
-            flowLayoutPanel1.Controls.Add(qrHyperlinkGroupBox);
+            flowLayoutPanel1.Controls.Add(qrHyperlinkUserControl);
             flowLayoutPanel1.Controls.Add(contactCardUserControl);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(2, 25);
@@ -124,34 +123,17 @@ namespace QR_Code_Desktop_App
             qrTextUserControl.TabIndex = 0;
             qrTextUserControl.Visible = false;
             // 
-            // qrHyperlinkGroupBox
+            // qrHyperlinkUserControl
             // 
-            qrHyperlinkGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            qrHyperlinkGroupBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            qrHyperlinkGroupBox.Controls.Add(qrHyperlinkInput);
-            qrHyperlinkGroupBox.Location = new Point(2, 108);
-            qrHyperlinkGroupBox.Margin = new Padding(2);
-            qrHyperlinkGroupBox.Name = "qrHyperlinkGroupBox";
-            qrHyperlinkGroupBox.Padding = new Padding(2);
-            qrHyperlinkGroupBox.Size = new Size(251, 38);
-            qrHyperlinkGroupBox.TabIndex = 1;
-            qrHyperlinkGroupBox.TabStop = false;
-            qrHyperlinkGroupBox.Text = "Hyperlink Qr Code";
-            qrHyperlinkGroupBox.Visible = false;
-            // 
-            // qrHyperlinkInput
-            // 
-            qrHyperlinkInput.Dock = DockStyle.Fill;
-            qrHyperlinkInput.Location = new Point(2, 18);
-            qrHyperlinkInput.Margin = new Padding(2);
-            qrHyperlinkInput.Name = "qrHyperlinkInput";
-            qrHyperlinkInput.PlaceholderText = "URL";
-            qrHyperlinkInput.Size = new Size(247, 23);
-            qrHyperlinkInput.TabIndex = 0;
+            qrHyperlinkUserControl.Location = new Point(3, 109);
+            qrHyperlinkUserControl.Name = "qrHyperlinkUserControl";
+            qrHyperlinkUserControl.Size = new Size(250, 100);
+            qrHyperlinkUserControl.TabIndex = 1;
+            qrHyperlinkUserControl.Visible = false;
             // 
             // contactCardUserControl
             // 
-            contactCardUserControl.Location = new Point(3, 151);
+            contactCardUserControl.Location = new Point(3, 215);
             contactCardUserControl.Name = "contactCardUserControl";
             contactCardUserControl.Size = new Size(250, 108);
             contactCardUserControl.TabIndex = 2;
@@ -172,6 +154,7 @@ namespace QR_Code_Desktop_App
             // 
             // generalOptionsTab
             // 
+            generalOptionsTab.Controls.Add(qrColorOptions);
             generalOptionsTab.Location = new Point(4, 24);
             generalOptionsTab.Margin = new Padding(2);
             generalOptionsTab.Name = "generalOptionsTab";
@@ -180,6 +163,11 @@ namespace QR_Code_Desktop_App
             generalOptionsTab.TabIndex = 0;
             generalOptionsTab.Text = "General Options";
             generalOptionsTab.UseVisualStyleBackColor = true;
+            //
+            // qrColorOptions
+            //
+            qrColorOptions.Dock = DockStyle.Top;
+
             // 
             // previewPanel
             // 
@@ -205,8 +193,6 @@ namespace QR_Code_Desktop_App
             tabControl1.ResumeLayout(false);
             qrCodeContentTab.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
-            qrHyperlinkGroupBox.ResumeLayout(false);
-            qrHyperlinkGroupBox.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -219,10 +205,10 @@ namespace QR_Code_Desktop_App
         private TabPage qrCodeContentTab;
         private ComboBox qrCodeTypeSelector;
         private FlowLayoutPanel flowLayoutPanel1;
-        private GroupBox qrHyperlinkGroupBox;
-        private TextBox qrHyperlinkInput;
         private PreviewPanel previewPanel;
         private QRTextUserControl qrTextUserControl;
+        private QRHyperlinkUserControl qrHyperlinkUserControl;
         private ContactCardUserControl contactCardUserControl;
+        private QRColorOptions qrColorOptions;
     }
 }

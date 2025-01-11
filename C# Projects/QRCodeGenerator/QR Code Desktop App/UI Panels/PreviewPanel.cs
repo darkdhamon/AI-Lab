@@ -1,11 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace QR_Code_Desktop_App.UI_Panels
+﻿namespace QR_Code_Desktop_App.UI_Panels
 {
     public partial class PreviewPanel : UserControl
     {
+        public string QRCodeContent { get; set; } // Expose QR code content
+        public Image QRCodeImage => qrCodePictureBox.Image; // Expose QR code image
+
         public PreviewPanel()
         {
             InitializeComponent();
@@ -25,6 +24,7 @@ namespace QR_Code_Desktop_App.UI_Panels
 
             qrCodePictureBox.Image = qrImage;
             qrCodeTextBox.Text = qrText;
+            QRCodeContent = qrText; // Store the QR code content
         }
     }
 }

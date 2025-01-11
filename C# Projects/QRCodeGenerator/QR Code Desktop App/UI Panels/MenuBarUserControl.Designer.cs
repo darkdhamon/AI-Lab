@@ -1,4 +1,5 @@
-﻿namespace QR_Code_Desktop_App.UI_Panels
+﻿
+namespace QR_Code_Desktop_App.UI_Panels
 {
     partial class MenuBarUserControl
     {
@@ -35,6 +36,7 @@
             this.savePNGAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,9 +94,9 @@
             // 
             // saveAsToolStripMenuItem
             // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.saveAsToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
             // 
             // MenuBarUserControl
             // 
@@ -118,5 +120,6 @@
         private System.Windows.Forms.ToolStripMenuItem savePNGAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private ToolStripMenuItem openToolStripMenuItem;
     }
 }
