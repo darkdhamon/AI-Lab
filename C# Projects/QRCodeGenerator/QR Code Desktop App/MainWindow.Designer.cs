@@ -12,7 +12,7 @@ namespace QR_Code_Desktop_App
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -40,8 +40,11 @@ namespace QR_Code_Desktop_App
             contactCardUserControl = new ContactCardUserControl();
             qrCodeTypeSelector = new ComboBox();
             generalOptionsTab = new TabPage();
+            generalOptionsScrollPanel = new FlowLayoutPanel();
+            generalOptionsFlowContainer = new FlowLayoutPanel();
             previewPanel = new PreviewPanel();
             qrColorOptions = new QRColorOptions();
+            logoUploadUserControl = new LogoUploadUserControl();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -49,6 +52,8 @@ namespace QR_Code_Desktop_App
             tabControl1.SuspendLayout();
             qrCodeContentTab.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            generalOptionsTab.SuspendLayout();
+            generalOptionsScrollPanel.SuspendLayout();
             SuspendLayout();
             // 
             // menuBarUserControl
@@ -74,7 +79,7 @@ namespace QR_Code_Desktop_App
             // 
             splitContainer1.Panel2.Controls.Add(previewPanel);
             splitContainer1.Size = new Size(800, 376);
-            splitContainer1.SplitterDistance = 266;
+            splitContainer1.SplitterDistance = 320;
             splitContainer1.SplitterWidth = 3;
             splitContainer1.TabIndex = 1;
             // 
@@ -150,11 +155,10 @@ namespace QR_Code_Desktop_App
             qrCodeTypeSelector.Name = "qrCodeTypeSelector";
             qrCodeTypeSelector.Size = new Size(254, 23);
             qrCodeTypeSelector.TabIndex = 0;
-            qrCodeTypeSelector.SelectedIndex = 0; // Set the default selection
             // 
             // generalOptionsTab
             // 
-            generalOptionsTab.Controls.Add(qrColorOptions);
+            generalOptionsTab.Controls.Add(generalOptionsScrollPanel);
             generalOptionsTab.Location = new Point(4, 24);
             generalOptionsTab.Margin = new Padding(2);
             generalOptionsTab.Name = "generalOptionsTab";
@@ -163,19 +167,57 @@ namespace QR_Code_Desktop_App
             generalOptionsTab.TabIndex = 0;
             generalOptionsTab.Text = "General Options";
             generalOptionsTab.UseVisualStyleBackColor = true;
-            //
-            // qrColorOptions
-            //
-            qrColorOptions.Dock = DockStyle.Top;
-
+            // 
+            // generalOptionsScrollPanel
+            // 
+            generalOptionsScrollPanel.AutoScroll = true;
+            generalOptionsScrollPanel.Controls.Add(generalOptionsFlowContainer);
+            generalOptionsScrollPanel.Controls.Add(qrColorOptions);
+            generalOptionsScrollPanel.Controls.Add(logoUploadUserControl);
+            generalOptionsScrollPanel.Dock = DockStyle.Fill;
+            generalOptionsScrollPanel.FlowDirection = FlowDirection.TopDown;
+            generalOptionsScrollPanel.Location = new Point(2, 2);
+            generalOptionsScrollPanel.Name = "generalOptionsScrollPanel";
+            generalOptionsScrollPanel.Size = new Size(254, 344);
+            generalOptionsScrollPanel.TabIndex = 0;
+            generalOptionsScrollPanel.WrapContents = false;
+            // 
+            // generalOptionsFlowContainer
+            // 
+            generalOptionsFlowContainer.AutoSize = true;
+            generalOptionsFlowContainer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            generalOptionsFlowContainer.Dock = DockStyle.Fill;
+            generalOptionsFlowContainer.FlowDirection = FlowDirection.TopDown;
+            generalOptionsFlowContainer.Location = new Point(3, 3);
+            generalOptionsFlowContainer.Name = "generalOptionsFlowContainer";
+            generalOptionsFlowContainer.Size = new Size(300, 0);
+            generalOptionsFlowContainer.TabIndex = 1;
+            generalOptionsFlowContainer.WrapContents = false;
             // 
             // previewPanel
             // 
             previewPanel.Dock = DockStyle.Fill;
             previewPanel.Location = new Point(0, 0);
             previewPanel.Name = "previewPanel";
+            previewPanel.QRCodeContent = null;
             previewPanel.Size = new Size(531, 376);
             previewPanel.TabIndex = 0;
+            // 
+            // qrColorOptions1
+            // 
+            qrColorOptions.Location = new Point(3, 9);
+            qrColorOptions.Name = "qrColorOptions1";
+            qrColorOptions.SelectedBackgroundColor = Color.FromArgb(0, 255, 255, 255);
+            qrColorOptions.SelectedForegroundColor = Color.FromArgb(0, 0, 0);
+            qrColorOptions.Size = new Size(300, 200);
+            qrColorOptions.TabIndex = 2;
+            // 
+            // logoUploadUserControl1
+            // 
+            logoUploadUserControl.Location = new Point(3, 215);
+            logoUploadUserControl.Name = "logoUploadUserControl1";
+            logoUploadUserControl.Size = new Size(220, 270);
+            logoUploadUserControl.TabIndex = 3;
             // 
             // MainWindow
             // 
@@ -193,6 +235,9 @@ namespace QR_Code_Desktop_App
             tabControl1.ResumeLayout(false);
             qrCodeContentTab.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
+            generalOptionsTab.ResumeLayout(false);
+            generalOptionsScrollPanel.ResumeLayout(false);
+            generalOptionsScrollPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -209,6 +254,9 @@ namespace QR_Code_Desktop_App
         private QRTextUserControl qrTextUserControl;
         private QRHyperlinkUserControl qrHyperlinkUserControl;
         private ContactCardUserControl contactCardUserControl;
+        private FlowLayoutPanel generalOptionsScrollPanel;
+        private FlowLayoutPanel generalOptionsFlowContainer;
         private QRColorOptions qrColorOptions;
+        private LogoUploadUserControl logoUploadUserControl;
     }
 }

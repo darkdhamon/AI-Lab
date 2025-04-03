@@ -15,6 +15,9 @@ namespace QR_Code_Desktop_App
             // Subscribe to ColorUpdated event from QRColorOptions
             qrColorOptions.ColorUpdated += UpdateQRCode;
 
+            // Subscribe to LogoUploaded event
+            logoUploadUserControl.LogoUploaded += UpdateQRCode;
+
             // Subscribe to MenuBar events
             menuBarUserControl.SavePNGClicked += MenuBar_SavePNG;
             menuBarUserControl.SavePNGAsClicked += MenuBar_SavePNGAs;
@@ -180,7 +183,7 @@ namespace QR_Code_Desktop_App
                 var qrGenerator = new QRCodeGeneratorLib.QRCodeGeneratorTool();
                 var tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}_GeneratedQRCode.png");
 
-                bool success = qrGenerator.GenerateQRCode(qrContent, tempFilePath, 20, foregroundColor, backgroundColor);
+                bool success = qrGenerator.GenerateQRCode(qrContent, tempFilePath, 20, foregroundColor, backgroundColor,logoFilePath: logoUploadUserControl.LogoFilePath);
 
                 if (success)
                 {
@@ -257,7 +260,8 @@ namespace QR_Code_Desktop_App
             qrHyperlinkUserControl.Visible = false;
             contactCardUserControl.Visible = false;
             // Add logic for other group boxes if applicable
-            
+
         }
+
     }
 }
